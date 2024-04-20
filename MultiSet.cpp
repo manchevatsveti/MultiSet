@@ -5,9 +5,9 @@ bool MultiSet::isKValid(uint8_t k) const
 	return ( k >= 1 && k<=8);
 }
 
-bool MultiSet::isInSet(int n) const
+bool MultiSet::isInSet(int num) const
 {
-	return (n>=0 && n <= this->n);
+	return (num >=0 && n >= num);
 }
 
 int MultiSet::getBucketId(int id) const
@@ -192,8 +192,11 @@ MultiSet::MultiSet(int n, uint8_t k)
 {
 	this->n = n;
 
-	if(isKValid(k))//error handling
-		this->k = k;
+	if (!isKValid(k)) {
+		throw std::invalid_argument("Number should be between 1 and 8!");
+	}
+	
+	this->k = k;
 
 	size = ((n * k) / 8) + 1;
 
@@ -230,8 +233,8 @@ MultiSet& MultiSet::operator=(MultiSet&& other) noexcept
 
 void MultiSet::add(int num)
 {
-	if (!isInSet(n)) {
-		//error handling
+	if (!isInSet(num)) {
+		throw std::invalid_argument("Invalid number to add.");
 	}
 
 	int newCount = countNumInSet(num) + 1;
@@ -248,13 +251,12 @@ void MultiSet::add(int num)
 		addInOneBucket(num, newCount);
 	}
 	
-	
 }
 
 uint8_t MultiSet::countNumInSet(int num) const
 {
 	if (!isInSet(num)) {
-		//error handling
+		throw std::invalid_argument("Invalid number to get the count of.");
 	}
 
 	if (isInTwoBuckets(num)) {
