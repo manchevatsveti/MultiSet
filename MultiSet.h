@@ -14,32 +14,51 @@ private:
 
 	bool isKValid(uint8_t) const;
 	bool isInSet(int n) const;
-	bool isEmpty(int id) const;
 
 	int getBucketId(int id) const;
 	int getPosInBucket(int id) const;
 	int getBegId(int num) const;
 	int getLastId(int num) const;
 
-	void printNumById(int id) const;
+	bool isInTwoBuckets(int num) const;
+	int getFirstIdInSecondBucket(int num) const;
+	void addInTwoBuckets(int num, int newCount);
+	void addInOneBucket(int num, int newCount);
+	void removeNumTwoBuckets(int num);
+	void removeNumOneBucket(int num);
+
+	uint8_t getCountTwoBuckets(int num) const;
+	uint8_t getCountOneBucket(int num) const;
+
 
 	void writeToBinary(std::ofstream& ofs) const;
 	void readFromBinary(std::ifstream& ifs);
+
+	void copyFrom(const MultiSet& other);
+	void free();
+	void moveFrom(MultiSet&& other);
+
+	static void printInBinary(uint8_t num);
+
 public:
-	MultiSet() {
-		k = 3;
-		n = 7;
-		multiSet = new uint8_t[2]{ 81,7 };
-	}
+
 	MultiSet(int n, uint8_t k);
-	void add(int n);//bool?
-	int countNumInSet(int num) const;
+	MultiSet(const MultiSet& other);
+	MultiSet& operator=(const MultiSet& other);
+	MultiSet(MultiSet&& other) noexcept;
+	MultiSet& operator=(MultiSet&& other) noexcept;
+
+	void add(int n);
+	uint8_t countNumInSet(int num) const;
 	void print() const;
+	void printMem() const;
 
 	void writeToBinaryFile(const char* filename) const;
 	void readFromBinaryFile(const char* filename);
 
 	friend MultiSet intersection(const MultiSet& lhs, const MultiSet& rhs);
+	friend MultiSet operator-(const MultiSet& lhs, const MultiSet& rhs);
+	friend MultiSet addition(const MultiSet& ms);
 	~MultiSet();
 };
 
