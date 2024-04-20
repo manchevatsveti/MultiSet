@@ -272,7 +272,7 @@ uint8_t MultiSet::countNumInSet(int num) const
 void MultiSet::print() const
 {
 	for (int i = 0; i <= n; i++) {
-		if (countNumInSet(i)>0) {
+		if (countNumInSet(i) > 0) {
 			std::cout << i << " ";
 		}
 	}
@@ -292,8 +292,7 @@ void MultiSet::writeToBinaryFile(const char* filename) const
 	std::ofstream ofs(filename, std::ios::out | std::ios::binary);
 
 	if (!ofs.is_open()) {
-		//error handling
-		std::cout << "Unable to open file";
+		throw std::runtime_error("Unable to open file for reading. ");
 	}
 
 	writeToBinary(ofs);
@@ -304,7 +303,7 @@ void MultiSet::readFromBinaryFile(const char* filename)
 	std::ifstream ifs(filename, std::ios::in | std::ios::binary);
 	
 	if (!ifs.is_open()) {
-		//error handling
+		throw std::runtime_error("Unable to open file for writing. ");
 	}
 
 	readFromBinary(ifs);
@@ -343,10 +342,18 @@ MultiSet operator-(const MultiSet& lhs, const MultiSet& rhs)
 	MultiSet ms(n, k);
 
 	for (int i = 0; i <= ms.n; i++) {
-		int countlhs = lhs.countNumInSet(i);
-		int countRhs = rhs.countNumInSet(i);
 
-		int count = countlhs - countRhs;
+		int count = 0;
+		if (i > rhs.n) {
+
+			count = lhs.countNumInSet(i);
+		}
+		else {
+			int countlhs = lhs.countNumInSet(i);
+			int countRhs = rhs.countNumInSet(i);
+
+			count = countlhs - countRhs;
+		}
 
 		for (int j = 0; j < count; j++) {
 			ms.add(i);

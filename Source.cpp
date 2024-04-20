@@ -10,10 +10,13 @@ int main() {
 		ms.add(2);
 		ms.add(0);
 		ms.add(2);
-		ms.countNumInSet(77);
+		std::cout << (int)ms.countNumInSet(2) << std::endl;;
 		ms.printMem();
 		ms.print();
-		//ms.writeToBinaryFile("test.dat");
+		ms.writeToBinaryFile("test.dat");
+
+		MultiSet msBinary(1, 1);
+		msBinary.readFromBinaryFile("test.dat");
 
 		MultiSet ms2(5, 2);
 		ms2.add(1);
@@ -21,9 +24,13 @@ int main() {
 
 		MultiSet ms3 = intersection(ms, ms2);
 		MultiSet m4 = ms - ms2;
+		m4.print();
 		MultiSet m5 = addition(ms2);
 	}
 	catch (std::invalid_argument& e) {
+		std::cout << e.what() << std::endl;
+	}
+	catch (std::runtime_error& e) {
 		std::cout << e.what() << std::endl;
 	}
 }
